@@ -7,6 +7,8 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema import StrOutputParser
 
 
 load_dotenv()
@@ -38,12 +40,21 @@ def load_embeddings(doc_sp):
     return db.as_retriever()
 
 
+def response(retriever,query):
+    chain = (
+        {"context":retriever,"question": RunnablePassthrough()}
+        | chat_prompt_template
+        | model
+        | StrOutputParser()
+    )
+    return chain.invoke(query)
+   
 def test(docs):
     doc_cunks = load_doc(docs)
     retriever = load_embeddings(doc_cunks)
-    vectors = retriever.get_vectors()
-    
-    for vec in vectors:
-        print(vec)
+    query = "Quelles sont les aides financières pour l’employeur ?"   
+    res = response(retriever,query)
+    print(res)
 
 
+test("CPRO.pdf")
