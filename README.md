@@ -18,3 +18,29 @@ Clonez le dépôt et installez les dépendances :
 ```bash
 cd LangChain_RAG_docsPDF
 pip install -r requirements.txt
+```
+
+## Fonctionnalités
+Extraction de texte à partir de fichiers PDF.
+Création d'une base de connaissances à partir du texte extrait.
+Utilisation d'un modèle de langage pour répondre aux questions.
+Interface utilisateur Streamlit pour interagir avec le système.
+
+## Utilisation
+1- Lancez l'application Streamlit :
+```bash
+streamlit run main.py
+ ```
+
+2- Téléchargez un fichier PDF via l'interface utilisateur.
+3- Posez des questions et recevez des réponses basées sur le contenu du PDF.
+
+## Fonctionnement
+Le texte est extrait des fichiers PDF et divisé en morceaux.
+Les morceaux de texte sont transformés en embeddings à l'aide de OpenAIEmbeddings.
+Un modèle de langage OpenAI génère des réponses aux questions posées par l'utilisateur.
+L'interface Streamlit facilite l'interaction avec le système.
+
+
+
+
