@@ -4,6 +4,10 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts.chat import HumanMessagePromptTemplate, SystemMessagePromptTemplate
 from langchain.prompts import ChatPromptTemplate
 from langchain_community.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -21,9 +25,25 @@ chat_prompt_template = ChatPromptTemplate.from_messages([system_msg_prompt, huma
 
 
 def load_doc(docs):
-    pass
+    
+    loaders = PyPDFLoader(docs)
+    pages = loaders.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 600, chunk_overlap = 50)
+    doc_split = text_splitter.split_documents(pages)
+    return doc_split
 
-loaders = PyPDFLoader("CPRO.pdf")
-pages = loaders.load_and_split()
+def load_embeddings(doc_sp):
+    embed = OpenAIEmbeddings()
+    db = Chroma.from_documents(doc_sp,embed)
+    return db.as_retriever()
 
-print(pages)
+
+def test(docs):
+    doc_cunks = load_doc(docs)
+    retriever = load_embeddings(doc_cunks)
+    vectors = retriever.get_vectors()
+    
+    for vec in vectors:
+        print(vec)
+
+
