@@ -1,6 +1,6 @@
 # LangChain_RAG_docsPDF
 ![Ask_Book_Questions_Workflow](https://github.com/user-attachments/assets/4063088d-396e-4491-b68c-a73c4c8c401d)
-
+-https://bennycheung.github.io/ask-a-book-questions-with-langchain-openai
 
 Projet utilisant LangChain pour poser des questions à partir de documents PDF en utilisant un système de récupération-augmented generation (RAG).
 
